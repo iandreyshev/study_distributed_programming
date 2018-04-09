@@ -14,13 +14,15 @@ namespace Frontend
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
-        }
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("config.json")
+                .Build();
 
-        public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls("http://127.0.0.1:5001")
-                .Build();
+                .UseConfiguration(config)
+                .Build()
+                .Run();
+        }
     }
 }
