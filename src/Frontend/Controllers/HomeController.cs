@@ -8,35 +8,47 @@ namespace Frontend.Controllers
 {
 	public class HomeController : Controller
 	{
-		private static readonly HttpClient client = new HttpClient();
+		private HttpClient _client = new HttpClient();
 
 		public IActionResult Index()
 		{
 			return View();
 		}
 
-		[HttpGet]
-		public IActionResult Upload()
+		public IActionResult TextDetails()
 		{
 			return View();
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Upload(string data)
+		public async Task<IActionResult> Index(string text)
+		{
+			var response = await PostAsync("text", text, "http://127.0.0.1:5000/api/Values");
+			var responseString = await response.ReadAsStringAsync();
+
+			return Ok(responseString);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> TextDetails(string id)
+		{
+			var response = await PostAsync("id", id, "http://127.0.0.1:5000/api/TextDetails");
+			var responseString = await response.ReadAsStringAsync();
+
+			return Ok(responseString);
+		}
+
+		private async Task<HttpContent> PostAsync(string key, string value, string url)
 		{
 			var values = new Dictionary<string, string>
 			{
-				{ "value", data }
+				{ key, value }
 			};
 
 			var content = new FormUrlEncodedContent(values);
-			var response = await client.PostAsync("http://127.0.0.1:5000/api/values", content);
+			var response = await _client.PostAsync(url, content);
 
-			Console.WriteLine(response);
-
-			var responseString = await response.Content.ReadAsStringAsync();
-
-			return Ok(responseString);
+			return response.Content;
 		}
 	}
 }

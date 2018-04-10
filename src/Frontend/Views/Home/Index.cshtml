@@ -1,12 +1,14 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Data input";
 }
-
 <div>
-    <h2>Описание</h2>
-
-    <p>
-        Необходимо разработать приложение, состоящее из двух компонентов: Frontend и Backend, взаимодействующих по протоколу HTTP.        
-    </p>
+	<h2>Введите текст для отправки на сервер</h2>
+	<form method="post">
+		<div>
+			<input name="text" type="text" placeholder="Sample text" />
+		</div>
+		<div>
+			<input type="submit">
+		</div>
+	</form>
 </div>
-

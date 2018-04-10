@@ -1,59 +1,34 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
-using StackExchange.Redis;
-using RabbitMQ.Client;
-using System.Text;
+using Backend.MessageQueue;
+using Backend.Repository;
 
 namespace Backend.Controllers
 {
 	[Route("api/[controller]")]
 	public class ValuesController : Controller
 	{
-		static readonly string QUEUE_NAME = "backend-api";
-		static readonly string RADIS_HOST = "localhost";
+		private IRepository _repository;
+		private IMessageQueue _messageQueue;
 
-		// GET api/values/<id>
-		[HttpGet("{id}")]
-		public string Get(string id)
+		public ValuesController(
+			IRepository repository,
+			IMessageQueue messageQueue)
 		{
-			ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(RADIS_HOST);
-			IDatabase database = redis.GetDatabase();
-			return database.StringGet(id);
+			_messageQueue = messageQueue;
+			_repository = repository;
 		}
 
-		// POST api/values
+		// POST api/Values
 		[HttpPost]
-		public string Post([FromForm]string value)
+		public string Post([FromForm]string text)
 		{
-			Console.WriteLine("Data: " + value);
 			string id = Guid.NewGuid().ToString();
-			Console.WriteLine("Id: " + id);
 
-			SaveData(id, value);
-			PostMessageAboutNewData(id);
+			_repository.SetString(id, text);
+			_messageQueue.Post("", id);
 
 			return id;
-		}
-
-		private void SaveData(string id, string value)
-		{
-			ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(RADIS_HOST);
-			IDatabase database = redis.GetDatabase();
-			database.StringSet(id, value);
-		}
-
-		private void PostMessageAboutNewData(string id)
-		{
-			ConnectionFactory factory = new ConnectionFactory();
-			using (IConnection connection = factory.CreateConnection())
-			{
-				using (IModel channel = connection.CreateModel())
-				{
-					channel.QueueDeclare(QUEUE_NAME, false, false, false, null);
-					var body = Encoding.UTF8.GetBytes(id);
-					channel.BasicPublish("", QUEUE_NAME, null, body);
-				}
-			}
 		}
 	}
 }

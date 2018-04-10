@@ -1,24 +1,24 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Frontend</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Frontend</title>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a asp-area="" asp-controller="Home" asp-action="Index">Главная</a></li>
-            <li><a asp-area="" asp-controller="Home" asp-action="Upload">Форма ввода</a></li>
-        </ul>
-    </nav>
-    <div class="container body-content">
-        <h1>Задание #1 Синхронное взаимодействие компонентов</h1>
-        @RenderBody()
-        <hr/>
-        <footer>
-            Студент: Петров Иван, ПС-31
-        </footer>
-    </div>
+	<h1>Распределенное программирование</h1>
+	<nav>
+		<ul>
+			<li><a asp-area="" asp-controller="Home" asp-action="Index">Отправка текста</a></li>
+			<li><a asp-area="" asp-controller="Home" asp-action="TextDetails">Запрос статистики по идентификатору (Лаб.4)</a></li>
+		</ul>
+	</nav>
+	<div class="container body-content">
+		@RenderBody()
+		<hr />
+		<footer>
+			Андрейшев Иван, ПС-31, 2018
+		</footer>
+	</div>
 </body>
 </html>
