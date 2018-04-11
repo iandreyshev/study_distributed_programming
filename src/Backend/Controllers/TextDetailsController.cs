@@ -16,9 +16,9 @@ namespace Backend.Controllers
 			_repository = repository;
 		}
 
-		// POST api/TextDetails
-		[HttpPost]
-		public string Post([FromForm]string id)
+		// GET api/TextDetails/{id}
+		[HttpGet("{id}")]
+		public string Get(string id)
 		{
 			string result = null;
 

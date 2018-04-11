@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend", "Backend\Backend.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextListener", "TextListener\TextListener.csproj", "{DDA9B1C6-0E8D-44FA-8307-7096FFC3ACAC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextRankCalc", "TextRankCalc\TextRankCalc.csproj", "{3E64AE51-BC8F-4F56-B4EA-DE1940DD05B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{DDA9B1C6-0E8D-44FA-8307-7096FFC3ACAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDA9B1C6-0E8D-44FA-8307-7096FFC3ACAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDA9B1C6-0E8D-44FA-8307-7096FFC3ACAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E64AE51-BC8F-4F56-B4EA-DE1940DD05B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E64AE51-BC8F-4F56-B4EA-DE1940DD05B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E64AE51-BC8F-4F56-B4EA-DE1940DD05B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E64AE51-BC8F-4F56-B4EA-DE1940DD05B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

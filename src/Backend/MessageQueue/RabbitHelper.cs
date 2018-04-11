@@ -5,7 +5,8 @@ namespace Backend.MessageQueue
 {
 	public class RabbitMessageQueue : IMessageQueue
 	{
-		private readonly string QUEUE_NAME = "backend-api";
+		private readonly string EXCHANGE_NAME = "backend-api";
+		private readonly string EXCHANGE_TYPE = "fanout";
 
 		public void Post(string tag, string message)
 		{
@@ -14,9 +15,9 @@ namespace Backend.MessageQueue
 			{
 				using (IModel channel = connection.CreateModel())
 				{
-					channel.QueueDeclare(QUEUE_NAME, false, false, false, null);
+					channel.ExchangeDeclare(EXCHANGE_NAME, EXCHANGE_TYPE);
 					var body = Encoding.UTF8.GetBytes(message);
-					channel.BasicPublish("", QUEUE_NAME, null, body);
+					channel.BasicPublish(EXCHANGE_NAME, "", null, body);
 				}
 			}
 		}

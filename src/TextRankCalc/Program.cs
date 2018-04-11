@@ -4,7 +4,7 @@ using StackExchange.Redis;
 using System;
 using System.Text;
 
-namespace TextListener
+namespace TextRankCalc
 {
 	public class Program
 	{
