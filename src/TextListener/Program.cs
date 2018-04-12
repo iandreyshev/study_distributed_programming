@@ -8,8 +8,8 @@ namespace TextListener
 {
 	public class Program
 	{
-		private static readonly string EXCHANGE_NAME = "backend-api";
-		private static readonly string EXCHANGE_TYPE = "fanout";
+		private const string EXCHANGE_NAME = "backend-api";
+		private const string EXCHANGE_TYPE = ExchangeType.Fanout;
 
 		private static ConnectionMultiplexer RadisConnection => ConnectionMultiplexer.Connect("localhost");
 		private static IDatabase Database => RadisConnection.GetDatabase();
@@ -35,6 +35,7 @@ namespace TextListener
 			{
 				using (IModel channel = connection.CreateModel())
 				{
+					// Why we always declare new exchange ?
 					channel.ExchangeDeclare(EXCHANGE_NAME, EXCHANGE_TYPE);
 
 					var queueName = channel.QueueDeclare().QueueName;
