@@ -78,7 +78,6 @@ EXIT /B 0
 :CreateStopScript
   (
     @ECHO @ECHO OFF
-    @ECHO
     @ECHO taskkill /IM dotnet.exe
   ) > %BUILD_DIR%\stop.cmd
   EXIT /B 0
