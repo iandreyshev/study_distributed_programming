@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Frontend.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -39,9 +40,13 @@ namespace Frontend.Controllers
 		{
 			var client = new HttpClient();
 			var response = await client.GetAsync("http://127.0.0.1:5000/api/TextDetails/" + id);
-			var resultString = await response.Content.ReadAsStringAsync();
+			var result = new TextDetailsViewModel
+			{
+				IsExist = response.IsSuccessStatusCode,
+				Result = await response.Content.ReadAsStringAsync()
+			};
 
-			return View(resultString as object);
+			return View(result);
 		}
 	}
 }

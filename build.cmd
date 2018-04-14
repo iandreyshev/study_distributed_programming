@@ -3,14 +3,8 @@
 IF "%~1"=="" (
   GOTO InvalidArgs
 )
-IF "%~2"=="" (
-  GOTO InvalidArgs
-)
-IF "%~3"=="" (
-  GOTO InvalidArgs
-)
 
-SET BUILD_DIR=v%~1.%~2.%~3
+SET BUILD_DIR=v%~1
 SET CONFIG_DIR=config
 SET CONFIG_EXT=json
 SET SRC_DIR=src
@@ -83,7 +77,7 @@ EXIT /B 0
   EXIT /B 0
 
 :InvalidArgs
-  ECHO Invalid build version. Usage: build.cmd major minor patch
+  ECHO Invalid build version. Usage: build.cmd version
   EXIT /B 1
 
 :BuildError
