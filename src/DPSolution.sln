@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextListener", "TextListene
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextRankCalc", "TextRankCalc\TextRankCalc.csproj", "{3E64AE51-BC8F-4F56-B4EA-DE1940DD05B5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VowelConsCounter", "VowelConsCounter\VowelConsCounter.csproj", "{F8D31CD9-C766-4110-B960-D0A651C7A379}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VowelConsRater", "VowelConsRater\VowelConsRater.csproj", "{2107B9E3-3CEA-4BBD-91FC-EDB1295AEB8C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{3E64AE51-BC8F-4F56-B4EA-DE1940DD05B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E64AE51-BC8F-4F56-B4EA-DE1940DD05B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E64AE51-BC8F-4F56-B4EA-DE1940DD05B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8D31CD9-C766-4110-B960-D0A651C7A379}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8D31CD9-C766-4110-B960-D0A651C7A379}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8D31CD9-C766-4110-B960-D0A651C7A379}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8D31CD9-C766-4110-B960-D0A651C7A379}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2107B9E3-3CEA-4BBD-91FC-EDB1295AEB8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2107B9E3-3CEA-4BBD-91FC-EDB1295AEB8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2107B9E3-3CEA-4BBD-91FC-EDB1295AEB8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2107B9E3-3CEA-4BBD-91FC-EDB1295AEB8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

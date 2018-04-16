@@ -35,7 +35,6 @@ namespace TextListener
 			{
 				using (IModel channel = connection.CreateModel())
 				{
-					// Why we always declare new exchange ?
 					channel.ExchangeDeclare(EXCHANGE_NAME, EXCHANGE_TYPE);
 
 					var queueName = channel.QueueDeclare().QueueName;
