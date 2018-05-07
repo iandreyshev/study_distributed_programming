@@ -41,30 +41,45 @@ EXIT /B 0
   EXIT /B 0
 
 :Build
-  dotnet publish %SRC_DIR%\%BACKEND_NAME% -c Release -o ..\..\%BUILD_DIR%\%BACKEND_NAME%
+  CALL :BuildComponent %BACKEND_NAME%
   IF %ERRORLEVEL% NEQ 0 EXIT /B 1
-  dotnet publish %SRC_DIR%\%FRONTEND_NAME% -c Release -o ..\..\%BUILD_DIR%\%FRONTEND_NAME%
+  CALL :BuildComponent %FRONTEND_NAME%
   IF %ERRORLEVEL% NEQ 0 EXIT /B 1
-  dotnet build %SRC_DIR%\%TEXT_LISTENER_NAME% -o ..\..\%BUILD_DIR%\%TEXT_LISTENER_NAME%
+  CALL :BuildComponent %TEXT_LISTENER_NAME%
   IF %ERRORLEVEL% NEQ 0 EXIT /B 1
-  dotnet build %SRC_DIR%\%TEXT_RANK_CALC_NAME% -o ..\..\%BUILD_DIR%\%TEXT_RANK_CALC_NAME%
+  CALL :BuildComponent %TEXT_RANK_CALC_NAME%
   IF %ERRORLEVEL% NEQ 0 EXIT /B 1
-  dotnet build %SRC_DIR%\%VOWELS_COUNTER_NAME% -o ..\..\%BUILD_DIR%\%VOWELS_COUNTER_NAME%
+  CALL :BuildComponent %VOWELS_COUNTER_NAME%
   IF %ERRORLEVEL% NEQ 0 EXIT /B 1
-  dotnet build %SRC_DIR%\%VIWELS_RATE_NAME% -o ..\..\%BUILD_DIR%\%VIWELS_RATE_NAME%
+  CALL :BuildComponent %VIWELS_RATE_NAME%
+  IF %ERRORLEVEL% NEQ 0 EXIT /B 1
+  EXIT /B 0
+
+:BuildComponent
+  dotnet publish %SRC_DIR%\%~1 -c Release -o ..\..\%BUILD_DIR%\%~1
   IF %ERRORLEVEL% NEQ 0 EXIT /B 1
   EXIT /B 0
 
 :CopyConfig
   MD "%BUILD_DIR%\%CONFIG_DIR%"
   COPY "%BACKEND_CONFIG%" "%BUILD_DIR%\%CONFIG_DIR%\%BACKEND_NAME%.%CONFIG_EXT%"
-  IF %ERRORLEVEL% NEQ 0 EXIT /B 1
   COPY "%FRONTEND_CONFIG%" "%BUILD_DIR%\%CONFIG_DIR%\%FRONTEND_NAME%.%CONFIG_EXT%"
   IF %ERRORLEVEL% NEQ 0 EXIT /B 1
-  EXIT /B 0s
+  EXIT /B 0
 
 :CreateRunScript
   (
+    @ECHO @ECHO OFF
+    @ECHO SETLOCAL
+    @ECHO FOR /F "tokens=3,* delims=.=" %%G IN (test.properties) DO (set %%G=%%H)
+    @ECHO IF "%%G"=="file"
+    @ECHO   SET lfile=%%H
+    @ECHO IF "%%G"=="path"
+    @ECHO   SET lpath=%%H
+    @ECHO IF "%%G"=="extension"
+    @ECHO   SET lextention=%%H
+    @ECHO ECHO %path%
+    @ECHO ENDLOCAL
     @ECHO copy "%CONFIG_DIR%\%BACKEND_NAME%.%CONFIG_EXT%" "%BACKEND_NAME%\config.%CONFIG_EXT%"
     @ECHO copy "%CONFIG_DIR%\%FRONTEND_NAME%.%CONFIG_EXT%" "%FRONTEND_NAME%\config.%CONFIG_EXT%"
     @ECHO start "%FRONTEND_WINDOW_NAME%" dotnet %FRONTEND_NAME%\%FRONTEND_NAME%.dll
