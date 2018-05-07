@@ -1,4 +1,5 @@
 ﻿using RabbitMQ.Client;
+using System;
 using System.Text;
 
 namespace Backend.MessageQueue
@@ -6,7 +7,7 @@ namespace Backend.MessageQueue
 	public class RabbitMessageQueue : IMessageQueue
 	{
 		private readonly string EXCHANGE_NAME = "backend-api";
-		private readonly string EXCHANGE_TYPE = "fanout";
+		private readonly string EXCHANGE_TYPE = ExchangeType.Fanout;
 
 		public void Post(string tag, string message)
 		{
@@ -18,6 +19,7 @@ namespace Backend.MessageQueue
 					channel.ExchangeDeclare(EXCHANGE_NAME, EXCHANGE_TYPE);
 					var body = Encoding.UTF8.GetBytes(message);
 					channel.BasicPublish(EXCHANGE_NAME, "", null, body);
+					Console.WriteLine("Publish message '{0}'", message);
 				}
 			}
 		}
