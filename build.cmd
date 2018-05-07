@@ -1,4 +1,4 @@
-@ECHO OFF
+
 
 IF "%~1"=="" (
   GOTO InvalidArgs
@@ -17,6 +17,9 @@ SET FRONTEND_NAME=frontend
 SET FRONTEND_CONFIG=%SRC_DIR%\%FRONTEND_NAME%\config.%CONFIG_EXT%
 SET FRONTEND_WINDOW_NAME=%FRONTEND_NAME% %BUILD_DIR%
 
+SET PROPERTIES_FILE_PATH=%CONFIG_DIR%\properties.cfg
+SET PROPERTY_VOWEL_CONS_COUNTER_COUNT=VowelConsCounter
+
 SET TEXT_LISTENER_NAME=textListener
 SET TEXT_RANK_CALC_NAME=textRankCalc
 SET VOWELS_COUNTER_NAME=vowelConsCounter
@@ -32,6 +35,7 @@ IF %ERRORLEVEL% NEQ 0 GOTO CopyConfigsError
 
 CALL :CreateRunScript
 CALL :CreateStopScript
+CALL :CreateProperties
 
 ECHO Build completed!
 EXIT /B 0
@@ -68,27 +72,30 @@ EXIT /B 0
   EXIT /B 0
 
 :CreateRunScript
-  (
-    @ECHO @ECHO OFF
-    @ECHO SETLOCAL
-    @ECHO FOR /F "tokens=3,* delims=.=" %%G IN (test.properties) DO (set %%G=%%H)
-    @ECHO IF "%%G"=="file"
-    @ECHO   SET lfile=%%H
-    @ECHO IF "%%G"=="path"
-    @ECHO   SET lpath=%%H
-    @ECHO IF "%%G"=="extension"
-    @ECHO   SET lextention=%%H
-    @ECHO ECHO %path%
-    @ECHO ENDLOCAL
-    @ECHO copy "%CONFIG_DIR%\%BACKEND_NAME%.%CONFIG_EXT%" "%BACKEND_NAME%\config.%CONFIG_EXT%"
-    @ECHO copy "%CONFIG_DIR%\%FRONTEND_NAME%.%CONFIG_EXT%" "%FRONTEND_NAME%\config.%CONFIG_EXT%"
-    @ECHO start "%FRONTEND_WINDOW_NAME%" dotnet %FRONTEND_NAME%\%FRONTEND_NAME%.dll
-    @ECHO start "%BACKEND_WINDOW_NAME%" dotnet %BACKEND_NAME%\%BACKEND_NAME%.dll
-    @ECHO start "%TEXT_LISTENER_NAME%" dotnet %TEXT_LISTENER_NAME%\%TEXT_LISTENER_NAME%.dll
-    @ECHO start "%TEXT_RANK_CALC_NAME%" dotnet %TEXT_RANK_CALC_NAME%\%TEXT_RANK_CALC_NAME%.dll
-    @ECHO start "%VOWELS_COUNTER_NAME%" dotnet %VOWELS_COUNTER_NAME%\%VOWELS_COUNTER_NAME%.dll
-    @ECHO start "%VIWELS_RATE_NAME%" dotnet %VIWELS_RATE_NAME%\%VIWELS_RATE_NAME%.dll
-  ) > %BUILD_DIR%\run.cmd
+  SET DEST_FILE=%BUILD_DIR%\run.cmd
+  SET A=%%%%A
+  SET B=%%%%B
+  SET VCC=%%VowelConsRater%%
+  SET VCR=%%VowelConsRater%%
+  
+  @ECHO ON
+  @ECHO @ECHO OFF                                                                                           > %DEST_FILE%
+  @ECHO FOR /F "tokens=1,2 delims==" %A% IN (%PROPERTIES_FILE_PATH%) DO (                                  >> %DEST_FILE%
+  @ECHO   IF "%A%"=="VowelConsCounter" SET VowelConsCounter=%B%                                            >> %DEST_FILE%
+  @ECHO )                                                                                                  >> %DEST_FILE%
+  @ECHO FOR /F "tokens=1,2 delims==" %A% IN (%PROPERTIES_FILE_PATH%) DO (                                  >> %DEST_FILE%
+  @ECHO   IF "%A%"=="VowelConsRater" SET VowelConsRater=%B%                                                >> %DEST_FILE%
+  @ECHO )                                                                                                  >> %DEST_FILE%
+  @ECHO %VCC%                                                                                              >> %DEST_FILE%
+  @ECHO %VCR%                                                                                              >> %DEST_FILE%
+  @ECHO copy "%CONFIG_DIR%\%BACKEND_NAME%.%CONFIG_EXT%" "%BACKEND_NAME%\config.%CONFIG_EXT%"               >> %DEST_FILE%
+  @ECHO copy "%CONFIG_DIR%\%FRONTEND_NAME%.%CONFIG_EXT%" "%FRONTEND_NAME%\config.%CONFIG_EXT%"             >> %DEST_FILE%
+  @ECHO start "%BACKEND_WINDOW_NAME%" dotnet %BACKEND_NAME%\%BACKEND_NAME%.dll                             >> %DEST_FILE%
+  @ECHO start "%FRONTEND_WINDOW_NAME%" dotnet %FRONTEND_NAME%\%FRONTEND_NAME%.dll                          >> %DEST_FILE%
+  @ECHO start "%TEXT_LISTENER_NAME%" dotnet %TEXT_LISTENER_NAME%\%TEXT_LISTENER_NAME%.dll                  >> %DEST_FILE%
+  @ECHO start "%TEXT_RANK_CALC_NAME%" dotnet %TEXT_RANK_CALC_NAME%\%TEXT_RANK_CALC_NAME%.dll               >> %DEST_FILE%
+  @ECHO start "%VOWELS_COUNTER_NAME%" dotnet %VOWELS_COUNTER_NAME%\%VOWELS_COUNTER_NAME%.dll               >> %DEST_FILE%
+  @ECHO start "%VIWELS_RATE_NAME%" dotnet %VIWELS_RATE_NAME%\%VIWELS_RATE_NAME%.dll                        >> %DEST_FILE%
   EXIT /B 0
 
 :CreateStopScript
@@ -96,6 +103,14 @@ EXIT /B 0
     @ECHO @ECHO OFF
     @ECHO taskkill /IM dotnet.exe
   ) > %BUILD_DIR%\stop.cmd
+  EXIT /B 0
+
+:CreateProperties
+  @ECHO Hello, World! > %BUILD_DIR%\%PROPERTIES_FILE_PATH%
+  (
+    @ECHO VowelConsCounter=1
+    @ECHO VowelConsRater=1
+  ) > %BUILD_DIR%\%PROPERTIES_FILE_PATH%
   EXIT /B 0
 
 :InvalidArgs
