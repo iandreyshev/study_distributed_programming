@@ -75,27 +75,31 @@ EXIT /B 0
   SET DEST_FILE=%BUILD_DIR%\run.cmd
   SET A=%%%%A
   SET B=%%%%B
-  SET VCC=%%VowelConsRater%%
+  SET VCC=%%VowelConsCounter%%
   SET VCR=%%VowelConsRater%%
-  
+
   @ECHO ON
   @ECHO @ECHO OFF                                                                                           > %DEST_FILE%
+  @ECHO SET VowelConsCounter=1                                                                             >> %DEST_FILE%
+  @ECHO SET VowelConsRater=1                                                                               >> %DEST_FILE%
   @ECHO FOR /F "tokens=1,2 delims==" %A% IN (%PROPERTIES_FILE_PATH%) DO (                                  >> %DEST_FILE%
   @ECHO   IF "%A%"=="VowelConsCounter" SET VowelConsCounter=%B%                                            >> %DEST_FILE%
   @ECHO )                                                                                                  >> %DEST_FILE%
   @ECHO FOR /F "tokens=1,2 delims==" %A% IN (%PROPERTIES_FILE_PATH%) DO (                                  >> %DEST_FILE%
   @ECHO   IF "%A%"=="VowelConsRater" SET VowelConsRater=%B%                                                >> %DEST_FILE%
   @ECHO )                                                                                                  >> %DEST_FILE%
-  @ECHO %VCC%                                                                                              >> %DEST_FILE%
-  @ECHO %VCR%                                                                                              >> %DEST_FILE%
   @ECHO copy "%CONFIG_DIR%\%BACKEND_NAME%.%CONFIG_EXT%" "%BACKEND_NAME%\config.%CONFIG_EXT%"               >> %DEST_FILE%
   @ECHO copy "%CONFIG_DIR%\%FRONTEND_NAME%.%CONFIG_EXT%" "%FRONTEND_NAME%\config.%CONFIG_EXT%"             >> %DEST_FILE%
   @ECHO start "%BACKEND_WINDOW_NAME%" dotnet %BACKEND_NAME%\%BACKEND_NAME%.dll                             >> %DEST_FILE%
   @ECHO start "%FRONTEND_WINDOW_NAME%" dotnet %FRONTEND_NAME%\%FRONTEND_NAME%.dll                          >> %DEST_FILE%
   @ECHO start "%TEXT_LISTENER_NAME%" dotnet %TEXT_LISTENER_NAME%\%TEXT_LISTENER_NAME%.dll                  >> %DEST_FILE%
   @ECHO start "%TEXT_RANK_CALC_NAME%" dotnet %TEXT_RANK_CALC_NAME%\%TEXT_RANK_CALC_NAME%.dll               >> %DEST_FILE%
-  @ECHO start "%VOWELS_COUNTER_NAME%" dotnet %VOWELS_COUNTER_NAME%\%VOWELS_COUNTER_NAME%.dll               >> %DEST_FILE%
-  @ECHO start "%VIWELS_RATE_NAME%" dotnet %VIWELS_RATE_NAME%\%VIWELS_RATE_NAME%.dll                        >> %DEST_FILE%
+  @ECHO FOR /L %A% IN (1,1,%VCC%) DO (                                                                     >> %DEST_FILE%
+  @ECHO   start "%VOWELS_COUNTER_NAME%" dotnet %VOWELS_COUNTER_NAME%\%VOWELS_COUNTER_NAME%.dll             >> %DEST_FILE%
+  @ECHO )                                                                                                  >> %DEST_FILE%
+  @ECHO FOR /L %A% IN (1,1,%VCR%) DO (                                                                     >> %DEST_FILE%
+  @ECHO   start "%VIWELS_RATE_NAME%" dotnet %VIWELS_RATE_NAME%\%VIWELS_RATE_NAME%.dll                      >> %DEST_FILE%
+  @ECHO )                                                                                                  >> %DEST_FILE%
   EXIT /B 0
 
 :CreateStopScript
