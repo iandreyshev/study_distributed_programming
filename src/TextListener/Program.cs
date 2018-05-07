@@ -11,8 +11,9 @@ namespace TextListener
 		private const string EXCHANGE_NAME = "backend-api";
 		private const string EXCHANGE_TYPE = ExchangeType.Fanout;
 
+		private const int DATABASE_COUNT = 16;
+
 		private static ConnectionMultiplexer RadisConnection => ConnectionMultiplexer.Connect("localhost");
-		private static IDatabase Database => RadisConnection.GetDatabase();
 
 		public static void Main(string[] args)
 		{
@@ -45,13 +46,29 @@ namespace TextListener
 					{
 						var body = eventArgs.Body;
 						var messageId = Encoding.UTF8.GetString(body);
-						Console.WriteLine("Received message: {0}", Database.StringGet(messageId));
+						var message = GetDatabase(messageId).StringGet(messageId);
+						Console.WriteLine("Received message: {0}", message);
 					};
 
 					channel.BasicConsume(queueName, true, consumer);
 					Console.ReadLine();
 				}
 			}
+		}
+
+		private static IDatabase GetDatabase(string key)
+		{
+			int databaseId = 0;
+
+			for (int i = 0; i < key.Length; ++i)
+			{
+				databaseId += key[i];
+			}
+
+			databaseId %= DATABASE_COUNT;
+			Console.WriteLine("Key: {0}, Redis database: {1}", key, databaseId);
+
+			return RadisConnection.GetDatabase(databaseId);
 		}
 	}
 }

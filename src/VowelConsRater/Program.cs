@@ -16,8 +16,8 @@ namespace TextRankCalc
 		private const string SEPARATOR = "|";
 		private const string RESULT_ID_PREFIX = "TextRank_";
 
-		private static ConnectionMultiplexer RadisConnection => ConnectionMultiplexer.Connect("localhost");
-		private static IDatabase Database => RadisConnection.GetDatabase();
+		private static ConnectionMultiplexer RedisConnection => ConnectionMultiplexer.Connect("localhost");
+		private const int DATABASE_COUNT = 16;
 
 		public static void Main(string[] args)
 		{
@@ -55,7 +55,7 @@ namespace TextRankCalc
 						var result = CalcResult(data[1], data[2]);
 
 						var textId = data[0];
-						Database.StringSet(RESULT_ID_PREFIX + data[0], result);
+						GetDatabase(textId).StringSet(RESULT_ID_PREFIX + data[0], result);
 						Console.WriteLine("Result for '{0}': {1}", textId, result);
 					};
 
@@ -69,8 +69,6 @@ namespace TextRankCalc
 
 		private static string CalcResult(string vowelCount, string consCount)
 		{
-			Thread.Sleep(5000);
-
 			try
 			{
 				var vowels = int.Parse(vowelCount);
@@ -87,6 +85,21 @@ namespace TextRankCalc
 			{
 				return "null";
 			}
+		}
+
+		private static IDatabase GetDatabase(string key)
+		{
+			int databaseId = 0;
+
+			for (int i = 0; i < key.Length; ++i)
+			{
+				databaseId += key[i];
+			}
+
+			databaseId %= DATABASE_COUNT;
+			Console.WriteLine("Key: {0}, Redis database: {1}", key, databaseId);
+
+			return RedisConnection.GetDatabase(databaseId);
 		}
 	}
 }

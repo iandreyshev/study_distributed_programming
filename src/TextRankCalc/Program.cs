@@ -15,8 +15,6 @@ namespace TextRankCalc
 		private const string VOWEL_CONS_EXCHANGE_TYPE = ExchangeType.Direct;
 		private const string ROUTE_VOWELS_CALC = "calculate-vowels-count";
 
-		private static ConnectionMultiplexer RadisConnection => ConnectionMultiplexer.Connect("localhost");
-
 		public static void Main(string[] args)
 		{
 			try

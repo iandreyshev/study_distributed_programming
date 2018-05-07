@@ -1,4 +1,4 @@
-
+@ECHO OFF
 
 IF "%~1"=="" (
   GOTO InvalidArgs

@@ -23,7 +23,7 @@ namespace VowelsConsCounter
 			= new HashSet<char>() { 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'z' };
 
 		private static ConnectionMultiplexer RedisConnection => ConnectionMultiplexer.Connect("localhost");
-		private static IDatabase Database => RedisConnection.GetDatabase();
+		private const int DATABASE_COUNT = 16;
 
 		public static void Main(string[] args)
 		{
@@ -58,7 +58,7 @@ namespace VowelsConsCounter
 						var textId = Encoding.UTF8.GetString(body);
 						Console.WriteLine("Received message: {0}", textId);
 
-						var text = Database.StringGet(textId);
+						var text = GetDatabase(textId).StringGet(textId);
 						var result = textId + SEPARATOR + CalcResult(text);
 						var resultMessage = Encoding.UTF8.GetBytes(result);
 						channel.BasicPublish(EXCHANGE, ROUTE_VOWELS_RATE, body: resultMessage);
@@ -75,8 +75,6 @@ namespace VowelsConsCounter
 
 		private static string CalcResult(string message)
 		{
-			Thread.Sleep(5000);
-
 			int vovels = 0;
 			int consonants = 0;
 
@@ -98,6 +96,21 @@ namespace VowelsConsCounter
 			}
 
 			return String.Format("{0}{1}{2}", vovels, SEPARATOR, consonants);
+		}
+
+		private static IDatabase GetDatabase(string key)
+		{
+			int databaseId = 0;
+
+			for (int i = 0; i < key.Length; ++i)
+			{
+				databaseId += key[i];
+			}
+
+			databaseId %= DATABASE_COUNT;
+			Console.WriteLine("Key: {0}, Redis database: {1}", key, databaseId);
+
+			return RedisConnection.GetDatabase(databaseId);
 		}
 	}
 }
