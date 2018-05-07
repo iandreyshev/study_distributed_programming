@@ -1,0 +1,14 @@
+﻿@model TextDetailsViewModel
+@{
+	ViewData["Title"] = "ShowTextDetails";
+
+	if (Model.IsExist)
+	{
+		<h2>Результат вычислений:</h2>
+		<h3>@Model.Result</h3>
+	}
+	else
+	{
+		<h2>Результат вычислений не найден</h2>
+	}
+}
