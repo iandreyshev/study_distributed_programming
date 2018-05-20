@@ -35,5 +35,18 @@ namespace Backend.Controllers
 
 			return Ok(result);
 		}
+
+		// GET api/TextDetails/Statistic
+		[HttpGet("Statistic")]
+		public IActionResult Get()
+		{
+			var result = string.Format(
+				"Count: {0}, Best count: {1}, Average value: {2}",
+				_repository.GetString("RESULT_COUNT", "Undefined"),
+				_repository.GetString("RESULT_BEST_COUNT", "Undefined"),
+				_repository.GetString("RESULT_AVG", "Undefined"));
+
+			return Ok(result);
+		}
 	}
 }

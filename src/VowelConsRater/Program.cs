@@ -3,7 +3,6 @@ using RabbitMQ.Client.Events;
 using StackExchange.Redis;
 using System;
 using System.Text;
-using System.Threading;
 
 namespace TextRankCalc
 {
@@ -15,6 +14,9 @@ namespace TextRankCalc
 		private const string ROUTE = "calculate-vowels-rate";
 		private const string SEPARATOR = "|";
 		private const string RESULT_ID_PREFIX = "TextRank_";
+
+		private const string RESULT_EXCHANGE_TYPE = ExchangeType.Fanout;
+		private const string RESULT_EXCHANGE = "result-api";
 
 		private static ConnectionMultiplexer RedisConnection => ConnectionMultiplexer.Connect("localhost");
 		private const int DATABASE_COUNT = 16;
@@ -39,10 +41,7 @@ namespace TextRankCalc
 			{
 				using (IModel channel = connection.CreateModel())
 				{
-					channel.ExchangeDeclare(EXCHANGE, EXCHANGE_TYPE);
-
-					channel.QueueDeclare(QUEUE, exclusive: false);
-					channel.QueueBind(QUEUE, EXCHANGE, ROUTE);
+					DeclareQueue(channel);
 
 					var consumer = new EventingBasicConsumer(channel);
 					consumer.Received += (model, eventArgs) =>
@@ -55,8 +54,12 @@ namespace TextRankCalc
 						var result = CalcResult(data[1], data[2]);
 
 						var textId = data[0];
-						GetDatabase(textId).StringSet(RESULT_ID_PREFIX + data[0], result);
+						GetDatabase(textId, out int dbIndex)
+						.StringSet(RESULT_ID_PREFIX + data[0], result);
 						Console.WriteLine("Result for '{0}': {1}", textId, result);
+						Console.WriteLine("Save result to database {0}", dbIndex);
+
+						PostResult(channel, result);
 					};
 
 					channel.BasicConsume(QUEUE, true, consumer);
@@ -65,6 +68,17 @@ namespace TextRankCalc
 					Console.ReadLine();
 				}
 			}
+		}
+
+		private static void DeclareQueue(IModel channel)
+		{
+			channel.ExchangeDeclare(EXCHANGE, EXCHANGE_TYPE);
+			channel.QueueDeclare(QUEUE, exclusive: false);
+			channel.QueueBind(QUEUE, EXCHANGE, ROUTE);
+
+			channel.ExchangeDeclare(RESULT_EXCHANGE, RESULT_EXCHANGE_TYPE);
+			var resultQueue = channel.QueueDeclare().QueueName;
+			channel.QueueBind(resultQueue, RESULT_EXCHANGE, routingKey: "");
 		}
 
 		private static string CalcResult(string vowelCount, string consCount)
@@ -87,7 +101,7 @@ namespace TextRankCalc
 			}
 		}
 
-		private static IDatabase GetDatabase(string key)
+		private static IDatabase GetDatabase(string key, out int dbIndex)
 		{
 			int databaseId = 0;
 
@@ -96,10 +110,17 @@ namespace TextRankCalc
 				databaseId += key[i];
 			}
 
-			databaseId %= DATABASE_COUNT;
+			dbIndex = databaseId % DATABASE_COUNT;
 			Console.WriteLine("Key: {0}, Redis database: {1}", key, databaseId);
 
-			return RedisConnection.GetDatabase(databaseId);
+			return RedisConnection.GetDatabase(dbIndex);
+		}
+
+		private static void PostResult(IModel channel, string result)
+		{
+			var resultMessage = Encoding.UTF8.GetBytes(result);
+			channel.BasicPublish(RESULT_EXCHANGE, "", null, resultMessage);
+			Console.WriteLine("Post message to result queue: {0}", result);
 		}
 	}
 }

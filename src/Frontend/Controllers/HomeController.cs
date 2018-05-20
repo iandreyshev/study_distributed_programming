@@ -1,6 +1,5 @@
 ﻿using Frontend.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -17,6 +16,18 @@ namespace Frontend.Controllers
 		public IActionResult TextDetails()
 		{
 			return View();
+		}
+
+		public async Task<IActionResult> Statistic()
+		{
+			var client = new HttpClient();
+			var response = await client.GetAsync("http://127.0.0.1:5000/api/TextDetails/Statistic");
+			var result = new StatisticViewModel
+			{
+				Result = await response.Content.ReadAsStringAsync()
+			};
+
+			return View(result);
 		}
 
 		[HttpPost]

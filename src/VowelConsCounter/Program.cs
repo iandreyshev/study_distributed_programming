@@ -22,7 +22,8 @@ namespace VowelsConsCounter
 		private static HashSet<char> CONSONANTS
 			= new HashSet<char>() { 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'z' };
 
-		private static ConnectionMultiplexer RedisConnection => ConnectionMultiplexer.Connect("localhost");
+		private static ConnectionMultiplexer RedisConnection =>
+			ConnectionMultiplexer.Connect("localhost");
 		private const int DATABASE_COUNT = 16;
 
 		public static void Main(string[] args)
