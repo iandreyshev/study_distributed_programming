@@ -8,7 +8,7 @@ namespace TextListener
 {
 	public class Program
 	{
-		private const string EXCHANGE_NAME = "backend-api";
+		private const string EXCHANGE_NAME = "processing-limiter";
 		private const string EXCHANGE_TYPE = ExchangeType.Fanout;
 
 		private const int DATABASE_COUNT = 16;

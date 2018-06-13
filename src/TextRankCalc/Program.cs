@@ -8,10 +8,10 @@ namespace TextRankCalc
 {
 	public class Program
 	{
-		private const string BASE_EXCHANGE_NAME = "backend-api";
-		private const string BASE_EXCHANGE_TYPE = ExchangeType.Fanout;
+        private const string RECEIVE_EXCHANGE_NAME = "processing-limiter";
+        private const string RECEIVE_EXCHANGE_TYPE = ExchangeType.Fanout;
 
-		private const string VOWEL_CONS_EXCHANGE = "vowel-cons-api";
+        private const string VOWEL_CONS_EXCHANGE = "vowel-cons-api";
 		private const string VOWEL_CONS_EXCHANGE_TYPE = ExchangeType.Direct;
 		private const string ROUTE_VOWELS_CALC = "calculate-vowels-count";
 
@@ -39,17 +39,27 @@ namespace TextRankCalc
 					channel.ExchangeDeclare(VOWEL_CONS_EXCHANGE, VOWEL_CONS_EXCHANGE_TYPE);
 
 					// To receive messages
-					channel.ExchangeDeclare(BASE_EXCHANGE_NAME, BASE_EXCHANGE_TYPE);
+					channel.ExchangeDeclare(RECEIVE_EXCHANGE_NAME, RECEIVE_EXCHANGE_TYPE);
 					var queueName = channel.QueueDeclare().QueueName;
-					channel.QueueBind(queueName, BASE_EXCHANGE_NAME, routingKey: "");
+					channel.QueueBind(queueName, RECEIVE_EXCHANGE_NAME, routingKey: "");
 
 					var consumer = new EventingBasicConsumer(channel);
 					consumer.Received += (model, eventArgs) =>
 					{
 						var message = Encoding.UTF8.GetString(eventArgs.Body);
-						Console.WriteLine("Received message: {0}", message);
+                        Console.WriteLine("Received message: {0}", message);
 
-						channel.BasicPublish(VOWEL_CONS_EXCHANGE, ROUTE_VOWELS_CALC, body: eventArgs.Body);
+                        var messageData = message.Split("|");
+                        var isSuccess = messageData[0];
+                        var id = messageData[1];
+
+                        if (isSuccess.ToLower() != "true")
+                        {
+                            return;
+                        }
+
+                        var body = Encoding.UTF8.GetBytes(id);
+						channel.BasicPublish(VOWEL_CONS_EXCHANGE, ROUTE_VOWELS_CALC, body: body);
 					};
 
 					channel.BasicConsume(queueName, true, consumer);

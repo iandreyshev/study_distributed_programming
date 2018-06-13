@@ -25,6 +25,8 @@ SET TEXT_RANK_CALC_NAME=textRankCalc
 SET TEXT_RANK_STAT_NAME=textStats
 SET VOWELS_COUNTER_NAME=vowelConsCounter
 SET VIWELS_RATE_NAME=vowelConsRater
+SET TEXT_PROCESSING_LIMITER=textProcessingLimiter
+SET TEXT_SUCCESS_MARKER=textSuccessMarker
 
 CALL :Clear
 
@@ -48,23 +50,21 @@ EXIT /B 0
 :Build
   CALL :BuildComponent %BACKEND_NAME%
   IF %ERRORLEVEL% NEQ 0 EXIT /B 1
-
   CALL :BuildComponent %FRONTEND_NAME%
   IF %ERRORLEVEL% NEQ 0 EXIT /B 1
-
   CALL :BuildComponent %TEXT_LISTENER_NAME%
   IF %ERRORLEVEL% NEQ 0 EXIT /B 1
-
   CALL :BuildComponent %TEXT_RANK_CALC_NAME%
   IF %ERRORLEVEL% NEQ 0 EXIT /B 1
-
   CALL :BuildComponent %VOWELS_COUNTER_NAME%
   IF %ERRORLEVEL% NEQ 0 EXIT /B 1
-  
   CALL :BuildComponent %VIWELS_RATE_NAME%
   IF %ERRORLEVEL% NEQ 0 EXIT /B 1
-
   CALL :BuildComponent %TEXT_RANK_STAT_NAME%
+  IF %ERRORLEVEL% NEQ 0 EXIT /B 1
+  CALL :BuildComponent %TEXT_PROCESSING_LIMITER%
+  IF %ERRORLEVEL% NEQ 0 EXIT /B 1
+  CALL :BuildComponent %TEXT_SUCCESS_MARKER%
   IF %ERRORLEVEL% NEQ 0 EXIT /B 1
 
   EXIT /B 0
@@ -102,8 +102,10 @@ EXIT /B 0
   @ECHO start "%BACKEND_WINDOW_NAME%" dotnet %BACKEND_NAME%\%BACKEND_NAME%.dll                             >> %DEST_FILE%
   @ECHO start "%FRONTEND_WINDOW_NAME%" dotnet %FRONTEND_NAME%\%FRONTEND_NAME%.dll                          >> %DEST_FILE%
   @ECHO start "%TEXT_LISTENER_NAME%" dotnet %TEXT_LISTENER_NAME%\%TEXT_LISTENER_NAME%.dll                  >> %DEST_FILE%
-  @ECHO start "%TEXT_RANK_STAT_NAME%" dotnet %TEXT_RANK_STAT_NAME%\%TEXT_RANK_STAT_NAME%.dll                  >> %DEST_FILE%
+  @ECHO start "%TEXT_RANK_STAT_NAME%" dotnet %TEXT_RANK_STAT_NAME%\%TEXT_RANK_STAT_NAME%.dll               >> %DEST_FILE%
   @ECHO start "%TEXT_RANK_CALC_NAME%" dotnet %TEXT_RANK_CALC_NAME%\%TEXT_RANK_CALC_NAME%.dll               >> %DEST_FILE%
+  @ECHO start "%TEXT_PROCESSING_LIMITER%" dotnet %TEXT_PROCESSING_LIMITER%\%TEXT_PROCESSING_LIMITER%.dll   >> %DEST_FILE%
+  @ECHO start "%TEXT_SUCCESS_MARKER%" dotnet %TEXT_SUCCESS_MARKER%\%TEXT_SUCCESS_MARKER%.dll               >> %DEST_FILE%
   @ECHO FOR /L %A% IN (1,1,%VCC%) DO (                                                                     >> %DEST_FILE%
   @ECHO   start "%VOWELS_COUNTER_NAME%" dotnet %VOWELS_COUNTER_NAME%\%VOWELS_COUNTER_NAME%.dll             >> %DEST_FILE%
   @ECHO )                                                                                                  >> %DEST_FILE%

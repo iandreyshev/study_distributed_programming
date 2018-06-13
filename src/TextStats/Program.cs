@@ -8,10 +8,10 @@ namespace TextStats
 {
 	public class Program
 	{
-		private const string RESULT_EXCHANGE_TYPE = ExchangeType.Fanout;
-		private const string RESULT_EXCHANGE = "result-api";
+        private const string RECEIVE_EXCHANGE_TYPE = ExchangeType.Fanout;
+        private const string RECEIVE_EXCHANGE_NAME = "success-marked";
 
-		private static ConnectionMultiplexer RedisConnection =>
+        private static ConnectionMultiplexer RedisConnection =>
 			ConnectionMultiplexer.Connect("localhost");
 		private static IDatabase Database { get { return RedisConnection.GetDatabase(); } }
 
@@ -51,10 +51,9 @@ namespace TextStats
 			{
 				using (IModel channel = connection.CreateModel())
 				{
-					channel.ExchangeDeclare(RESULT_EXCHANGE, RESULT_EXCHANGE_TYPE);
-
+					channel.ExchangeDeclare(RECEIVE_EXCHANGE_NAME, RECEIVE_EXCHANGE_TYPE);
 					var queueName = channel.QueueDeclare().QueueName;
-					channel.QueueBind(queueName, RESULT_EXCHANGE, routingKey: "");
+					channel.QueueBind(queueName, RECEIVE_EXCHANGE_NAME, routingKey: "");
 
 					var consumer = new EventingBasicConsumer(channel);
 					consumer.Received += (model, eventArgs) =>
@@ -76,8 +75,10 @@ namespace TextStats
 		{
 			try
 			{
+                var resultData = resultStr.Split("|");
+                var result = float.Parse(resultData[1]);
+
 				++_count;
-				float result = float.Parse(resultStr);
 
 				if (result >= 0.5f)
 				{

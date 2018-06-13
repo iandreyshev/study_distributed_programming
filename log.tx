@@ -1,0 +1,258 @@
+
+D:\Programs\Volgatech\DistributedProgramming>IF "1.0.2" == "" (GOTO InvalidArgs ) 
+
+D:\Programs\Volgatech\DistributedProgramming>SET BUILD_DIR=v1.0.2 
+
+D:\Programs\Volgatech\DistributedProgramming>SET CONFIG_DIR=config 
+
+D:\Programs\Volgatech\DistributedProgramming>SET CONFIG_EXT=json 
+
+D:\Programs\Volgatech\DistributedProgramming>SET SRC_DIR=src 
+
+D:\Programs\Volgatech\DistributedProgramming>SET BACKEND_NAME=backend 
+
+D:\Programs\Volgatech\DistributedProgramming>SET BACKEND_CONFIG=src\backend\config.json 
+
+D:\Programs\Volgatech\DistributedProgramming>SET BACKEND_WINDOW_NAME=backend v1.0.2 
+
+D:\Programs\Volgatech\DistributedProgramming>SET FRONTEND_NAME=frontend 
+
+D:\Programs\Volgatech\DistributedProgramming>SET FRONTEND_CONFIG=src\frontend\config.json 
+
+D:\Programs\Volgatech\DistributedProgramming>SET FRONTEND_WINDOW_NAME=frontend v1.0.2 
+
+D:\Programs\Volgatech\DistributedProgramming>SET PROPERTIES_FILE_PATH=config\properties.cfg 
+
+D:\Programs\Volgatech\DistributedProgramming>SET PROPERTY_VOWEL_CONS_COUNTER_COUNT=VowelConsCounter 
+
+D:\Programs\Volgatech\DistributedProgramming>SET TEXT_LISTENER_NAME=textListener 
+
+D:\Programs\Volgatech\DistributedProgramming>SET TEXT_RANK_CALC_NAME=textRankCalc 
+
+D:\Programs\Volgatech\DistributedProgramming>SET TEXT_RANK_STAT_NAME=textStats 
+
+D:\Programs\Volgatech\DistributedProgramming>SET VOWELS_COUNTER_NAME=vowelConsCounter 
+
+D:\Programs\Volgatech\DistributedProgramming>SET VIWELS_RATE_NAME=vowelConsRater 
+
+D:\Programs\Volgatech\DistributedProgramming>SET TEXT_PROCESSING_LIMITER=textProcessingLimiter 
+
+D:\Programs\Volgatech\DistributedProgramming>SET TEXT_SUCCESS_MARKER=textSuccessMarker 
+
+D:\Programs\Volgatech\DistributedProgramming>CALL :Clear 
+
+D:\Programs\Volgatech\DistributedProgramming>IF EXIST v1.0.2 RD /s /q "v1.0.2" 
+
+D:\Programs\Volgatech\DistributedProgramming>EXIT /B 0 
+
+D:\Programs\Volgatech\DistributedProgramming>CALL :Build 
+
+D:\Programs\Volgatech\DistributedProgramming>CALL :BuildComponent backend 
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>CALL :BuildComponent textSuccessMarker 
+
+D:\Programs\Volgatech\DistributedProgramming>dotnet publish src\textSuccessMarker -c Release -o ..\..\v1.0.2\textSuccessMarker 
+Microsoft (R) Build Engine версии 15.7.177.53362 для .NET Core
+(C) Корпорация Майкрософт (Microsoft Corporation). Все права защищены.
+
+  Restore completed in 52,32 ms for D:\Programs\Volgatech\DistributedProgramming\src\textSuccessMarker\TextSuccessMarker.csproj.
+  TextSuccessMarker -> D:\Programs\Volgatech\DistributedProgramming\src\textSuccessMarker\bin\Release\netcoreapp2.0\TextSuccessMarker.dll
+  TextSuccessMarker -> D:\Programs\Volgatech\DistributedProgramming\v1.0.2\textSuccessMarker\
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>EXIT /B 0 
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>EXIT /B 0 
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>CALL :BuildComponent frontend 
+
+D:\Programs\Volgatech\DistributedProgramming>dotnet publish src\frontend -c Release -o ..\..\v1.0.2\frontend 
+Microsoft (R) Build Engine версии 15.7.177.53362 для .NET Core
+(C) Корпорация Майкрософт (Microsoft Corporation). Все права защищены.
+
+  Restore completed in 159,62 ms for D:\Programs\Volgatech\DistributedProgramming\src\frontend\Frontend.csproj.
+  Restore completed in 39,54 ms for D:\Programs\Volgatech\DistributedProgramming\src\frontend\Frontend.csproj.
+  Frontend -> D:\Programs\Volgatech\DistributedProgramming\src\frontend\bin\Release\netcoreapp2.0\Frontend.dll
+  Frontend -> D:\Programs\Volgatech\DistributedProgramming\v1.0.2\frontend\
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>EXIT /B 0 
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>CALL :BuildComponent textListener 
+
+D:\Programs\Volgatech\DistributedProgramming>dotnet publish src\textListener -c Release -o ..\..\v1.0.2\textListener 
+Microsoft (R) Build Engine версии 15.7.177.53362 для .NET Core
+(C) Корпорация Майкрософт (Microsoft Corporation). Все права защищены.
+
+  Restore completed in 51,68 ms for D:\Programs\Volgatech\DistributedProgramming\src\textListener\TextListener.csproj.
+  TextListener -> D:\Programs\Volgatech\DistributedProgramming\src\textListener\bin\Release\netcoreapp2.0\TextListener.dll
+  TextListener -> D:\Programs\Volgatech\DistributedProgramming\v1.0.2\textListener\
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>EXIT /B 0 
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>CALL :BuildComponent textRankCalc 
+
+D:\Programs\Volgatech\DistributedProgramming>dotnet publish src\textRankCalc -c Release -o ..\..\v1.0.2\textRankCalc 
+Microsoft (R) Build Engine версии 15.7.177.53362 для .NET Core
+(C) Корпорация Майкрософт (Microsoft Corporation). Все права защищены.
+
+  Restore completed in 51,89 ms for D:\Programs\Volgatech\DistributedProgramming\src\textRankCalc\TextRankCalc.csproj.
+  TextRankCalc -> D:\Programs\Volgatech\DistributedProgramming\src\textRankCalc\bin\Release\netcoreapp2.0\TextRankCalc.dll
+  TextRankCalc -> D:\Programs\Volgatech\DistributedProgramming\v1.0.2\textRankCalc\
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>EXIT /B 0 
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>CALL :BuildComponent vowelConsCounter 
+
+D:\Programs\Volgatech\DistributedProgramming>dotnet publish src\vowelConsCounter -c Release -o ..\..\v1.0.2\vowelConsCounter 
+Microsoft (R) Build Engine версии 15.7.177.53362 для .NET Core
+(C) Корпорация Майкрософт (Microsoft Corporation). Все права защищены.
+
+  Restore completed in 51,8 ms for D:\Programs\Volgatech\DistributedProgramming\src\vowelConsCounter\VowelConsCounter.csproj.
+  VowelConsCounter -> D:\Programs\Volgatech\DistributedProgramming\src\vowelConsCounter\bin\Release\netcoreapp2.0\VowelConsCounter.dll
+  VowelConsCounter -> D:\Programs\Volgatech\DistributedProgramming\v1.0.2\vowelConsCounter\
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>EXIT /B 0 
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>CALL :BuildComponent vowelConsRater 
+
+D:\Programs\Volgatech\DistributedProgramming>dotnet publish src\vowelConsRater -c Release -o ..\..\v1.0.2\vowelConsRater 
+Microsoft (R) Build Engine версии 15.7.177.53362 для .NET Core
+(C) Корпорация Майкрософт (Microsoft Corporation). Все права защищены.
+
+  Restore completed in 61,07 ms for D:\Programs\Volgatech\DistributedProgramming\src\vowelConsRater\VowelConsRater.csproj.
+  VowelConsRater -> D:\Programs\Volgatech\DistributedProgramming\src\vowelConsRater\bin\Release\netcoreapp2.0\VowelConsRater.dll
+  VowelConsRater -> D:\Programs\Volgatech\DistributedProgramming\v1.0.2\vowelConsRater\
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>EXIT /B 0 
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>CALL :BuildComponent textStats 
+
+D:\Programs\Volgatech\DistributedProgramming>dotnet publish src\textStats -c Release -o ..\..\v1.0.2\textStats 
+Microsoft (R) Build Engine версии 15.7.177.53362 для .NET Core
+(C) Корпорация Майкрософт (Microsoft Corporation). Все права защищены.
+
+  Restore completed in 61,12 ms for D:\Programs\Volgatech\DistributedProgramming\src\textStats\TextStats.csproj.
+  TextStats -> D:\Programs\Volgatech\DistributedProgramming\src\textStats\bin\Release\netcoreapp2.0\TextStats.dll
+  TextStats -> D:\Programs\Volgatech\DistributedProgramming\v1.0.2\textStats\
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>EXIT /B 0 
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>CALL :BuildComponent textProcessingLimiter 
+
+D:\Programs\Volgatech\DistributedProgramming>dotnet publish src\textProcessingLimiter -c Release -o ..\..\v1.0.2\textProcessingLimiter 
+Microsoft (R) Build Engine версии 15.7.177.53362 для .NET Core
+(C) Корпорация Майкрософт (Microsoft Corporation). Все права защищены.
+
+  Restore completed in 55,13 ms for D:\Programs\Volgatech\DistributedProgramming\src\textProcessingLimiter\TextProcessingLimiter.csproj.
+  TextProcessingLimiter -> D:\Programs\Volgatech\DistributedProgramming\src\textProcessingLimiter\bin\Release\netcoreapp2.0\TextProcessingLimiter.dll
+  TextProcessingLimiter -> D:\Programs\Volgatech\DistributedProgramming\v1.0.2\textProcessingLimiter\
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>EXIT /B 0 
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>CALL :BuildComponent textSuccessMarker 
+
+D:\Programs\Volgatech\DistributedProgramming>dotnet publish src\textSuccessMarker -c Release -o ..\..\v1.0.2\textSuccessMarker 
+Microsoft (R) Build Engine версии 15.7.177.53362 для .NET Core
+(C) Корпорация Майкрософт (Microsoft Corporation). Все права защищены.
+
+  Restore completed in 51,42 ms for D:\Programs\Volgatech\DistributedProgramming\src\textSuccessMarker\TextSuccessMarker.csproj.
+  TextSuccessMarker -> D:\Programs\Volgatech\DistributedProgramming\src\textSuccessMarker\bin\Release\netcoreapp2.0\TextSuccessMarker.dll
+  TextSuccessMarker -> D:\Programs\Volgatech\DistributedProgramming\v1.0.2\textSuccessMarker\
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>EXIT /B 0 
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>EXIT /B 0 
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 GOTO BuildError 
+
+D:\Programs\Volgatech\DistributedProgramming>CALL :CopyConfig 
+
+D:\Programs\Volgatech\DistributedProgramming>MD "v1.0.2\config" 
+
+D:\Programs\Volgatech\DistributedProgramming>COPY "src\backend\config.json" "v1.0.2\config\backend.json" 
+Скопировано файлов:         1.
+
+D:\Programs\Volgatech\DistributedProgramming>COPY "src\frontend\config.json" "v1.0.2\config\frontend.json" 
+Скопировано файлов:         1.
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 EXIT /B 1 
+
+D:\Programs\Volgatech\DistributedProgramming>EXIT /B 0 
+
+D:\Programs\Volgatech\DistributedProgramming>IF 0 NEQ 0 GOTO CopyConfigsError 
+
+D:\Programs\Volgatech\DistributedProgramming>CALL :CreateRunScript 
+
+D:\Programs\Volgatech\DistributedProgramming>SET DEST_FILE=v1.0.2\run.cmd 
+
+D:\Programs\Volgatech\DistributedProgramming>SET A=%%A 
+
+D:\Programs\Volgatech\DistributedProgramming>SET B=%%B 
+
+D:\Programs\Volgatech\DistributedProgramming>SET VCC=%VowelConsCounter% 
+
+D:\Programs\Volgatech\DistributedProgramming>SET VCR=%VowelConsRater% 
+
+D:\Programs\Volgatech\DistributedProgramming>EXIT /B 0 
+
+D:\Programs\Volgatech\DistributedProgramming>CALL :CreateStopScript 
+
+D:\Programs\Volgatech\DistributedProgramming>(
+ 
+ 
+) 1>v1.0.2\stop.cmd 
+
+D:\Programs\Volgatech\DistributedProgramming>EXIT /B 0 
+
+D:\Programs\Volgatech\DistributedProgramming>CALL :CreateProperties 
+
+D:\Programs\Volgatech\DistributedProgramming>(
+ 
+ 
+) 1>v1.0.2\config\properties.cfg 
+
+D:\Programs\Volgatech\DistributedProgramming>EXIT /B 0 
+
+D:\Programs\Volgatech\DistributedProgramming>ECHO Build completed! 
+Build completed!
+
+D:\Programs\Volgatech\DistributedProgramming>EXIT /B 0 
